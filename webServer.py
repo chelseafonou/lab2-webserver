@@ -37,14 +37,14 @@ def webServer(port=13331):
       response_headers = "HTTP/1.1 200 OK\r\nContent-Type: text/html; charset=UTF-8\r\nServer: MyServer\r\nConnection: close\r\n\r\n"
       # Fill in end
 
-      # Send the response headers to the client
-      connectionSocket.send(response_headers.encode())  # Encode and send headers
+      # Read the content of the requested file
+      file_content = f.read()
 
-      # Send the content of the requested file to the client
-      # Fill in start
-      for data in f:
-        connectionSocket.send(data)  # Send file data in chunks
-      # Fill in end
+      # Concatenate the headers and content into a single response message
+      response_message = response_headers.encode() + file_content
+
+      # Send the response message to the client all at once
+      connectionSocket.send(response_message)
 
       connectionSocket.close()  # closing the connection socket
 
